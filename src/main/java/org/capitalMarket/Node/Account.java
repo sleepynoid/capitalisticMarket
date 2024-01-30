@@ -5,7 +5,8 @@ public class Account {
     private String Username;
     private String Password;
 
-    public Account(String user, String pass) {
+    public Account(int id, String user, String pass) {
+        accountId = id;
         Username = user;
         Password = pass;
     }

@@ -1,6 +1,10 @@
 package org.capitalMarket.View;
 
 import javax.swing.*;
+
+import org.capitalMarket.Model.Gudang;
+import org.capitalMarket.Node.Account;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,11 +12,12 @@ import java.awt.event.ActionListener;
 public class mainView extends JFrame {
     private static String userName = "John Doe";
     private static int userID;
+    private static Account currentUser;
     
     
-    public mainView(int id, String user) {
-        userID = id;
-        userName = user;
+    public mainView(Account akun) {
+        userID = akun.getAccountId();
+        userName = akun.getUsername();
         init();
         loadComponent();
     }
@@ -43,7 +48,7 @@ public class mainView extends JFrame {
                 "Add Sepatu",
                 "Search by Name",
                 "Search by Brand",
-                "Check Stok"
+                "List All"
         };
 
         for (String menuItem : menuItems) {
@@ -61,50 +66,55 @@ public class mainView extends JFrame {
     }
     
 
-    // private static class InputHandler implements ActionListener {
-    //     private String menuItem;
+    private static class InputHandler implements ActionListener {
+        private String menuItem;
 
-    //     public InputHandler(String menuItem) {
-    //         this.menuItem = menuItem;
-    //     }
+        public InputHandler(String menuItem) {
+            this.menuItem = menuItem;
+        }
 
-    //     @Override
-    //     public void actionPerformed(ActionEvent e) {
-    //         // Handle button click based on the selected menu item
-    //         switch (menuItem) {
-    //             case "Detail Sepatu":
-    //                 System.out.println("Selected menu item: Detail Sepatu");
-    //                 // Add your code for Detail Sepatu action
-    //                 break;
-    //             case "Edit Detail Sepatu":
-    //                 System.out.println("Selected menu item: Edit Detail Sepatu");
-    //                 // Add your code for Edit Detail Sepatu action
-    //                 break;
-    //             case "Edit Stok Sepatu":
-    //                 System.out.println("Selected menu item: Edit Stok Sepatu");
-    //                 // Add your code for Edit Stok Sepatu action
-    //                 break;
-    //             case "Search by Name":
-    //                 System.out.println("Selected menu item: Search by Name");
-    //                 // Add your code for Search by Name action
-    //                 break;
-    //             case "Search by Brand":
-    //                 System.out.println("Selected menu item: Search by Brand");
-    //                 // Add your code for Search by Brand action
-    //                 break;
-    //             case "Check Stok":
-    //                 System.out.println("Selected menu item: Check Stok");
-    //                 // Add your code for Check Stok action
-    //                 break;
-    //         }
-    //     }
-    // }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            switch (menuItem) {
+                case "Detail Sepatu":
+                    SwingUtilities.invokeLater(() -> {
+                        SearchByString mainWindow = new SearchByString(currentUser);
+                        mainWindow.setVisible(true);
+                    });
+                    System.out.println("Selected menu item: Detail Sepatu");
+                    break;
+                case "Edit Detail Sepatu":
+                    System.out.println("Selected menu item: Edit Detail Sepatu");
+                    break;
+                case "Add Sepatu":
+                    SwingUtilities.invokeLater(() -> {
+                        AddItem mainWindow = new AddItem();
+                        mainWindow.setVisible(true);
+                    });
+                case "Edit Stok Sepatu":
+                    System.out.println("Selected menu item: Edit Stok Sepatu");
+                    break;
+                case "Search by Name":
+                    System.out.println("Selected menu item: Search by Name");
+                    break;
+                case "Search by Brand":
+                    System.out.println("Selected menu item: Search by Brand");
+                    break;
+                case "List All":
+                    SwingUtilities.invokeLater(() -> {
+                        Gudang gudang = new Gudang();
+                        ListAll mainWindow = new ListAll(gudang.getListSepatu());
+                        mainWindow.setVisible(true);
+                    });
+            }
+        }
+    }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            mainView mainWindow = new mainView(1,"aa");
-            mainWindow.setVisible(true);
-        });
+        // SwingUtilities.invokeLater(() -> {
+        //     mainView mainWindow = new mainView(1,"aa");
+        //     mainWindow.setVisible(true);
+        // });
     }
 }
 

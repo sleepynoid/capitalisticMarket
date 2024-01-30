@@ -1,67 +1,95 @@
 package org.capitalMarket.Model;
 
-import java.util.ArrayList;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.capitalMarket.Node.InventItem;
 import org.capitalMarket.Node.Item;
 import org.capitalMarket.Node.ShelfItem;
+import org.capitalMarket.Node.ShelfItem.InvalidFormatException;
 
 public class ModelShelf {
-    ArrayList<ShelfItem> listShelf;
-    int capacity = 10;
-    char currentId = 'A';
-    char maxId = 'B';
-    int currentPosition = -1;
-    int maxPosition = 10;
-    ArrayList<String> listKeys = new ArrayList<>();
-
+    TreeMap<String, ShelfItem> shelfMap;
+    int positionMax = 10;
     public ModelShelf() {
-        listShelf = new ArrayList<>();
+        shelfMap = new TreeMap<>();
+        // shelfMap.put("A-00", new ShelfItem(null, null));
     }
 
-    void addBeta(InventItem newItem) {
-        String locFormat = String.valueOf(currentId)+Integer.toString(currentPosition);
+    void addItem(InventItem newItem) {
+        char newId = getLastID();
+        int newPosition = shelfMap.isEmpty() ? 0 : shelfMap.lastEntry().getValue().getPosition() + 1;
+        System.out.println(newPosition);
 
-        // ShelfItem newShelf = new ShelfItem(locFormat, newItem);
-    }
-
-    String locationGenerator() {
-        String tempStr = String.valueOf(currentId)+Integer.toString(currentPosition);
-        char tempId = currentId;
-        int tempPosition = currentPosition;
-        while (!isExist(tempStr)) {
-            if (tempPosition != 10) {
-                tempPosition++;   
-            } else if (tempId == 'A' || tempId == 'B') {
-                tempPosition = 0;
-                tempId++;
-            } else {
-                System.out.println("keluar"+ tempPosition+tempId);
-                break;
-            }
-            tempStr = String.valueOf(tempId)+Integer.toString(tempPosition);
-            System.out.println("salah"+tempStr);
-            if (!isExist(tempStr)) {
-                System.out.println(tempStr);
-                currentId = tempId;
-                currentPosition = tempPosition;
-                listKeys.add(tempStr);
-                break;
-            }
+        if (newPosition > positionMax) {
+            newId = (char) (newId + 1);
+            newPosition = 0;
         }
-        return "nyahh";
+
+        String newLocation = String.format("%c-%02d", newId, newPosition);
+        try {
+            shelfMap.put(newLocation, new ShelfItem(newLocation, newItem));
+        } catch (InvalidFormatException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
-    boolean isExist(String str) {
-        for (String tempString : listKeys) {
-            if (tempString.equals(str)) {
-                return true;
-            }
+    void delItem(String location) {
+        shelfMap.remove(location);
+    }
+
+    public String getLastLocation() {
+        if (shelfMap.isEmpty()) {
+            return null;
         }
-        return false;
+        return shelfMap.lastKey();
+    }
+
+    public char getLastID() {
+        if (shelfMap.isEmpty()) {
+            return 'A';
+        }
+
+        String lastKey = shelfMap.lastKey();
+        return lastKey.charAt(0);
+    }
+
+    InventItem getItem(String str) {
+        return shelfMap.get(str).getShelfItem();
+    }
+
+    boolean isExist(String location) {
+        return shelfMap.containsKey(location);
+    }
+
+    public void printAllItems() {
+        for (Map.Entry<String, ShelfItem> entry : shelfMap.entrySet()) {
+            String location = entry.getKey();
+            ShelfItem shelfItem = entry.getValue();
+            System.out.println("Location: " + location + ", Shelf Item: " + shelfItem);
+        }
     }
 
     public static void main(String[] args) {
         ModelShelf test = new ModelShelf();
+        InventItem newItem = new InventItem(new Item(1, "null"," null"),7);  // Replace with actual instantiation
+        test.addItem(newItem);
+        test.addItem(newItem);
+        test.addItem(newItem);
+        test.addItem(newItem);
+        test.addItem(newItem);
+        test.addItem(newItem);
+        test.addItem(newItem);
+        test.addItem(newItem);
+        test.addItem(newItem);
+        test.addItem(newItem);
+        test.addItem(newItem);
+        test.addItem(newItem);
+        test.addItem(newItem);
+        test.addItem(newItem);
+        test.addItem(newItem);
+        test.delItem("B-01");
+        test.printAllItems();
+        System.out.println("Last id: " + test.getLastID());
     }
 }

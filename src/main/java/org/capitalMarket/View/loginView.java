@@ -2,6 +2,7 @@ package org.capitalMarket.View;
 
 import javax.swing.*;
 
+import org.capitalMarket.Controller.AccountController;
 import org.capitalMarket.Model.ModelAccount;
 
 import java.awt.*;
@@ -55,25 +56,18 @@ public class loginView extends JFrame {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Handle login button click
                 String username = usernameField.getText();
                 String password = String.valueOf(passwordField.getPassword());
-                // Add your login logic here
-                // System.out.println("Username: " + username);
-                // System.out.println("Password: " + new String(password));
-                // Clear password field after processing
-                if (username.equals(password)) {
-                    // Dispose the LoginView window
+
+                AccountController akun = new AccountController();
+                if (akun.login(username, password)) {
                     dispose();
                     
-                    // Create and show the mainView
                     SwingUtilities.invokeLater(() -> {
-                        mainView mainView = new mainView(1,username);
+                        mainView mainView = new mainView(akun.getCurrentUser());
                         mainView.setVisible(true);
                     });
                 } else {
-                    // Display an error message or take appropriate action for a failed login
-                    // JOptionPane.showMessageDialog(new J, "Invalid username or password", "Login Failed", JOptionPane.ERROR_MESSAGE);
                     JOptionPane.showMessageDialog(loginButton, "Password salah");
                 }
                 passwordField.setText("");

@@ -1,0 +1,26 @@
+[
+  {
+    "nama": "nikku",
+    "namaBrand": "nikka",
+    "kategori": "sepatu lari",
+    "ukuran": 10
+  },
+  {
+    "nama": "sepatu bagus",
+    "namaBrand": "Boto",
+    "kategori": "sepatu biasa",
+    "ukuran": 23
+  },
+  {
+    "nama": "adudu",
+    "namaBrand": "adidas",
+    "kategori": "sepatu kw",
+    "ukuran": 210
+  },
+  {
+    "nama": "Boost",
+    "namaBrand": "Nike",
+    "kategori": "Sepatu Lari",
+    "ukuran": 10
+  }
+]

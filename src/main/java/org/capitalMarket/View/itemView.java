@@ -1,5 +1,5 @@
 package org.capitalMarket.View;
 
-public class itemView {
+public class itemView extends {
     
 }
